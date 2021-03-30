@@ -14,7 +14,7 @@ const Sidebar = () => {
   const userChatRef = db
     .collection("chats")
     .where("users", "array-contains", user.email);
-  const [chatsSnapshot] = useCollection(userChatRef);
+  const [chatSnapshot] = useCollection(userChatRef);
 
   const createChat = () => {
     const input = prompt(
@@ -44,7 +44,7 @@ const Sidebar = () => {
   return (
     <Container>
       <Header>
-        <UserAvatar onClick={() => auth.signOut()} />
+        <UserAvatar src={user.photoURL} onClick={() => auth.signOut()} />
 
         <IconsContainer>
           <IconButton>
@@ -64,8 +64,8 @@ const Sidebar = () => {
       <SidebarButton onClick={createChat}> Start a new chat</SidebarButton>
 
       {/* {chats } */}
-      {chatsSnapshot?.docs.map((chat) => (
-        <Chat key={chat.id} id={chat.id} user={chat.data().users} />
+      {chatSnapshot?.docs.map((chat) => (
+        <Chat key={chat.id} id={chat.id} users={chat.data().users} />
       ))}
     </Container>
   );
@@ -73,7 +73,20 @@ const Sidebar = () => {
 
 export default Sidebar;
 
-const Container = styled.div``;
+const Container = styled.div`
+  flex: 0.45;
+  border-right: 1px solid whitesmoke;
+  height: 100vh;
+  min-width: 300px;
+  max-width: 300px;
+  overflow-y: scroll;
+
+  ::-webkit-scrollbar {
+    display: none;
+  }
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+`;
 
 const Search = styled.div`
   display: flex;
